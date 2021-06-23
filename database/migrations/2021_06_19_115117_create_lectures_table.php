@@ -17,8 +17,9 @@ class CreateLecturesTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->text('comment');
-            $table->integer('semester');
-            $table->integer('term');
+            $table->integer('timed');
+            $table->text('week');
+            $table->integer('table_place');
             $table->timestamps();
         });
     }

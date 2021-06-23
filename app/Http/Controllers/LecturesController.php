@@ -50,8 +50,8 @@ class LecturesController extends Controller
         $lectures = Lecture::find($request->id);
         $lectures->title   = $request->title;
         $lectures->comment = $request->comment;
-        $lectures->term    = $request->term;
-        $lectures->semester= $request->semester;
+        $lectures->timed    = $request->timed;
+        $lectures->week= $request->week;
         $lectures->save();
         return redirect('/');
     }
@@ -69,11 +69,20 @@ class LecturesController extends Controller
                     ->withErrors($validator);
         }
         //Eloquentモデル（登録処理）
+        $week_day = [
+            '月' => 10,
+            '火' => 20,
+            '水' => 30,
+            '木' => 40,
+            '金'=> 50
+        ];
+
         $lectures = new Lecture;
         $lectures->title = $request->title;
         $lectures->comment = $request->comment;
-        $lectures->term = $request->term;
-        $lectures->semester = $request->semester;
+        $lectures->timed = $request->timed;
+        $lectures->week = $request->week;
+        $lectures->table_place = $lectures->timed + $week_day[$request->week];
         $lectures->save();
         return redirect('/');
     }

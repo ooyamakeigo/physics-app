@@ -20,19 +20,21 @@
         </div>
         <!--/ comment -->
 
-        <!-- semester -->
+        <!-- week -->
         <div class="form-group">
-            <label for="semester">semester</label>
-            <input type="text" name="semester" class="form-control" value="{{$lecture->semester}}">
+            <label for="week">week</label>
+            <input type="text" name="week" class="form-control" value="{{$lecture->week}}">
         </div>
-        <!--/ semester -->
+        <!--/ week -->
 
-        <!-- term -->
+        <!-- timed -->
         <div class="form-group">
-            <label for="term">term</label>
-            <input type="text" name="term" class="form-control" value="{{$lecture->term}}"/>
+            <label for="timed">timed</label>
+            <input type="text" name="timed" class="form-control" value="{{$lecture->timed}}"/>
         </div>
-        <!--/ term -->
+        <!--/ timed -->
+
+
 
         <!-- Saveボタン/Backボタン -->
         <div class="well well-sm">

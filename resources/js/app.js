@@ -4,6 +4,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+const { find, divide } = require('lodash');
+
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -30,3 +32,10 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     el: '#app',
 });
+
+document.getElementById('id名').textContent =
+
+document.getElementById("").onclick = function() {
+    document.getElementById('id名').textContent = Hello,world!;
+
+  };

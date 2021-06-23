@@ -29,13 +29,21 @@
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="semester" class="col-sm-3 control-label">セメスター</label>
-                    <input type="text" name="semester" class="form-control">
+                    <label for="timed" class="col-sm-3 control-label">時限目</label>
+                    <input type="text" name="timed" class="form-control">
                 </div>
 
-                  <div class="form-group col-md-6">
-                    <label for="term" class="col-sm-3 control-label">ターム</label>
-                    <input type="text" name="term" class="form-control">
+                    <div class="form-group col-md-6">
+                        <label for="week" class="col-sm-3 control-label">曜日</label>
+                        <select name="week" class="form-control">
+                            <option value="月">月曜日</option>
+                            <option value="火">火曜日</option>
+                            <option value="水">水曜日</option>
+                            <option value="木">木曜日</option>
+                            <option value="金">金曜日</option>
+                        </select>
+
+
                 </div>
             </div>
 
@@ -59,53 +67,36 @@
                 <tr>
                     <th class="entitle">時限</th>
                     <th >月</th>
+
                     <th>火</th>
                     <th>水</th>
                     <th>木</th>
                     <th>金</th>
                 </tr>
             </thead>
+
+            
+
+
+
             <tbody>
-                <tr>
-                    <th class="entitle">1</th>
-                    <td><a href="/booksnew">無記入</a></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th class="entitle">2</th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th class="entitle">3</th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th class="entitle">4</th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <th class="entitle">5</th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                @for ($i = 1; $i < 6 ; $i++)
+                    <tr>
+                        <th class="entitle">{{ $i }}</th>
+                            @for ($j = 1; $j < 6 ; $j++)
+                                <?php $k = true; ?>
+                                @foreach ($lectures as $lecture)
+                                    @if ($lecture->table_place == $j * 10 + $i)
+                                        <td>{{$lecture->title}}</td>
+                                        <?php $k = false; ?>
+                                    @endif
+                                @endforeach
+                                @if ($k)
+                                    <td>無記入</td>
+                                @endif
+                            @endfor
+                    </tr>
+                @endfor
             </tbody>
         </table>
     </div>
