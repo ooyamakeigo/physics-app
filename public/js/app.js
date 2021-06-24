@@ -49848,6 +49848,10 @@ module.exports = function(module) {
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+var _require = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"),
+    find = _require.find,
+    divide = _require.divide;
+
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
@@ -49870,6 +49874,21 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 
 var app = new Vue({
   el: '#app'
+});
+
+/***/ }),
+
+/***/ "./resources/js/assets/test_jquery.js":
+/*!********************************************!*\
+  !*** ./resources/js/assets/test_jquery.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(function () {
+  $('#btn').on('click', function () {
+    alert("Hello jQuery!!");
+  });
 });
 
 /***/ }),
@@ -50000,13 +50019,14 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 0:
-/*!*************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
-  \*************************************************************/
+/*!**************************************************************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/js/assets/test_jquery.js ./resources/sass/app.scss ***!
+  \**************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! /Users/ooyamakeigo/Desktop/physics-app/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /Users/ooyamakeigo/Desktop/physics-app/resources/js/assets/test_jquery.js */"./resources/js/assets/test_jquery.js");
 module.exports = __webpack_require__(/*! /Users/ooyamakeigo/Desktop/physics-app/resources/sass/app.scss */"./resources/sass/app.scss");
 
 

@@ -18,6 +18,9 @@ use Illuminate\Http\Request;
 //一覧表示
 Route::get('/', 'LecturesController@index');
 
+//詳細ページ
+Route::post('/lecturesshow/{shows}','LecturesController@show');
+
 //新規登録画面
 Route::get('/lecturesnew', 'LecturesController@new');
 

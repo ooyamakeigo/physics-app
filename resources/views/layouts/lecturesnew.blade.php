@@ -12,8 +12,6 @@
         <div class="col-sm-6"></div>
         <input type="text" name="item_name" class="form-control">
     </div>
-
-
 </form>
 
 

@@ -1,9 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-
-
-//class
+use App\Http\Requests\StoreLecturePost;
+use Illuminate\Validation\Rule;
 use App\Lecture;
 use Validator;
 use Auth;
@@ -14,7 +13,6 @@ class LecturesController extends Controller
         $this->middleware('auth');
     }
 
-    //ダッシュボード表示
     public function index() {
         $lectures = Lecture::orderBy('created_at', 'asc')->get();
         return view('lectures', [
@@ -22,53 +20,53 @@ class LecturesController extends Controller
         ]);
     }
 
-    //新規登録
+    public function show(Lecture $shows) {
+        $lectures = Lecture::orderBy('created_at', 'asc')->get();
+        return view('lecturesshow', [
+            'lectures' => $lectures,
+            'show' => $shows
+        ]);
+    }
 
-    //更新画面
     public function edit(Lecture $lectures) {
         return view('lecturesedit', [
             'lecture' => $lectures
         ]);
     }
 
-
-    //更新
     public function update(Request $request) {
-        //バリデーション
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-
+            'title' => 'required|max:255',
+            'table_place' => 'required|unique:posts',
         ]);
-        //バリデーション:エラー
+
         if ($validator->fails()) {
             return redirect('/')
                 ->withInput()
                 ->withErrors($validator);
         }
 
-        //データ更新
+        $week_day = [
+            '月' => 10,
+            '火' => 20,
+            '水' => 30,
+            '木' => 40,
+            '金'=> 50
+        ];
+
         $lectures = Lecture::find($request->id);
         $lectures->title   = $request->title;
         $lectures->comment = $request->comment;
-        $lectures->timed    = $request->timed;
-        $lectures->week= $request->week;
+        $lectures->timed   = $request->timed;
+        $lectures->week    = $request->week;
+        $lectures->table_place = $lectures->timed + $week_day[$request->week];
         $lectures->save();
         return redirect('/');
     }
 
-    //登録
-    public function store(Request $request) {
-        //バリデーション
-        $validator = Validator::make($request->all(), [
 
-        ]);
-        //バリデーション:エラー
-        if ($validator->fails()) {
-                return redirect('/')
-                    ->withInput()
-                    ->withErrors($validator);
-        }
-        //Eloquentモデル（登録処理）
+    public function store(StoreLecturePost $request) {
         $week_day = [
             '月' => 10,
             '火' => 20,
@@ -85,9 +83,9 @@ class LecturesController extends Controller
         $lectures->table_place = $lectures->timed + $week_day[$request->week];
         $lectures->save();
         return redirect('/');
+
     }
 
-    //削除処理
     public function destroy(Lecture $Lecture) {
         $Lecture->delete();
         return redirect('/');

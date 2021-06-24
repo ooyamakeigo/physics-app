@@ -29,25 +29,21 @@
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="week" class="col-sm-3 control-label">曜日</label>
-                    <select name="week" class="form-control">
-                        <option value="月">月曜日</option>
-                        <option value="火">火曜日</option>
-                        <option value="水">水曜日</option>
-                        <option value="木">木曜日</option>
-                        <option value="金">金曜日</option>
-                    </select>
+                    <label for="timed" class="col-sm-3 control-label">時限目</label>
+                    <input type="text" name="timed" class="form-control">
                 </div>
 
-                <div class="form-group col-md-6">
-                    <label for="timed" class="col-sm-3 control-label">時限目</label>
-                    <select name="timed" class="form-control">
-                        <option value=1 >1時限目</option>
-                        <option value=2 >2時限目</option>
-                        <option value=3 >3時限目</option>
-                        <option value=4 >4時限目</option>
-                        <option value=5 >5時限目</option>
-                    </select>
+                    <div class="form-group col-md-6">
+                        <label for="week" class="col-sm-3 control-label">曜日</label>
+                        <select name="week" class="form-control">
+                            <option value="月">月曜日</option>
+                            <option value="火">火曜日</option>
+                            <option value="水">水曜日</option>
+                            <option value="木">木曜日</option>
+                            <option value="金">金曜日</option>
+                        </select>
+
+
                 </div>
             </div>
 
@@ -96,11 +92,10 @@
                                             <form action="{{ url('lecturesshow/'.$lecture->id) }}" method="POST">
                                                 @csrf
                                                 <button type="submit" class="btn btn-primary">
-                                                    まじ
+                                                    詳細
                                                 </button>
                                             </form>
                                         </td>
-
                                         <?php $k = false; ?>
                                     @endif
                                 @endforeach
@@ -112,6 +107,10 @@
                 @endfor
             </tbody>
         </table>
+    </div>
+
+    <div>
+        <p>{{$show->title}}</p>
     </div>
 
 
