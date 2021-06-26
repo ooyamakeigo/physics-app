@@ -15,8 +15,9 @@ class CreateLecturesTable extends Migration
     {
         Schema::create('lectures', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('user_id');
             $table->string('title');
-            $table->text('comment');
+            $table->string('teacher');
             $table->integer('timed');
             $table->text('week');
             $table->integer('table_place');

@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Requests;
-use Auth;
+
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreLecturePost extends FormRequest
+class UpdateLecturePost extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class StoreLecturePost extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return True;
     }
 
     /**
@@ -26,12 +26,12 @@ class StoreLecturePost extends FormRequest
     {
         return [
             'title' => 'required|max:10',
-            'teacher' => 'required',
+            'comment' => 'required',
             'timed' => 'required',
             'week' => [
                 'required',
                 Rule::unique('lectures')->ignore($this->input('id'))->where(function($query) {
-                    $query->where('user_id', Auth::user()->id)->where('timed', $this->input('timed'));
+                    $query->where('timed', $this->input('timed'));
                 }),
             ],
         ];
@@ -41,10 +41,8 @@ class StoreLecturePost extends FormRequest
     {
     return [
         'title.required' => 'タイトルを入力してください',
-        'title.max' => '授業名は10文字以内で入力してください',
-        'teacher.required'  => '教授名を入力してください',
+        'comment.required'  => 'コメントを入力してください!',
         "week.unique" => 'すでにこの時間は登録されている授業があります。',
     ];
     }
-
 }

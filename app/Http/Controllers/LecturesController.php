@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreLecturePost;
+use App\Http\Requests\UpdateLecturePost;
 use Illuminate\Validation\Rule;
 use App\Lecture;
 use Validator;
@@ -9,78 +10,70 @@ use Auth;
 
 class LecturesController extends Controller
 {
+    public $week_days = ['月', '火', '水', '木', '金'];
+    public $week_day = [
+        '月' => 10,
+        '火' => 20,
+        '水' => 30,
+        '木' => 40,
+        '金'=> 50
+    ];
+
+
     public function __construct() {
         $this->middleware('auth');
     }
 
     public function index() {
-        $lectures = Lecture::orderBy('created_at', 'asc')->get();
+        $lectures = Lecture::where('user_id',Auth::user()->id)->orderBy('created_at', 'asc')->get();
+        $shows = false;
+
         return view('lectures', [
-            'lectures' => $lectures
+            'lectures' => $lectures,
+            'show' => $shows,
+            'week_days' => $this->week_days
         ]);
     }
 
     public function show(Lecture $shows) {
-        $lectures = Lecture::orderBy('created_at', 'asc')->get();
-        return view('lecturesshow', [
+        $lectures = Lecture::where('user_id',Auth::user()->id)->orderBy('created_at', 'asc')->get();
+        return view('lectures', [
             'lectures' => $lectures,
-            'show' => $shows
+            'show' => $shows,
+            'week_days' => $this->week_days
         ]);
     }
 
-    public function edit(Lecture $lectures) {
+    public function edit($lecture_id) {
+        $lectures = Lecture::where('user_id',Auth::user()->id)->find($lecture_id);
         return view('lecturesedit', [
-            'lecture' => $lectures
+            'lecture' => $lectures,
+            'week_days' => $this->week_days
         ]);
     }
 
-    public function update(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required',
-            'title' => 'required|max:255',
-            'table_place' => 'required|unique:posts',
-        ]);
 
-        if ($validator->fails()) {
-            return redirect('/')
-                ->withInput()
-                ->withErrors($validator);
-        }
-
-        $week_day = [
-            '月' => 10,
-            '火' => 20,
-            '水' => 30,
-            '木' => 40,
-            '金'=> 50
-        ];
-
-        $lectures = Lecture::find($request->id);
+    public function update(StoreLecturePost $request) {
+        $lectures = Lecture::where('user_id',Auth::user()->id)->find($request->id);
+        $lectures->user_id  = Auth::user()->id;
         $lectures->title   = $request->title;
-        $lectures->comment = $request->comment;
+        $lectures->teacher = $request->teacher;
         $lectures->timed   = $request->timed;
         $lectures->week    = $request->week;
-        $lectures->table_place = $lectures->timed + $week_day[$request->week];
+        $lectures->table_place = $lectures->timed + $this->week_day[$request->week];
         $lectures->save();
         return redirect('/');
     }
 
 
     public function store(StoreLecturePost $request) {
-        $week_day = [
-            '月' => 10,
-            '火' => 20,
-            '水' => 30,
-            '木' => 40,
-            '金'=> 50
-        ];
-
         $lectures = new Lecture;
+        $lectures->user_id  = Auth::user()->id;
         $lectures->title = $request->title;
-        $lectures->comment = $request->comment;
+        $lectures->teacher = $request->teacher;
         $lectures->timed = $request->timed;
         $lectures->week = $request->week;
-        $lectures->table_place = $lectures->timed + $week_day[$request->week];
+        $lectures->table_place = $lectures->timed + $this->week_day[$request->week];
         $lectures->save();
         return redirect('/');
 

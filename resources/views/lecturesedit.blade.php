@@ -6,52 +6,43 @@
     @include('common.errors')
     <form action="{{ url('lectures/update') }}" method="POST">
 
-        <!-- title -->
         <div class="form-group">
-           <label for="title">Title</label>
+           <label for="title">授業名</label>
            <input type="text" name="title" class="form-control" value="{{$lecture->title}}">
         </div>
-        <!--/ title -->
 
-        <!-- comment -->
         <div class="form-group">
-            <label for="comment">Comment</label>
-            <input type="text" name="comment" class="form-control" value="{{$lecture->comment}}">
+            <label for="teacher">教授名</label>
+            <input type="text" name="teacher" class="form-control" value="{{$lecture->teacher}}">
         </div>
-        <!--/ comment -->
 
-        <!-- week -->
         <div class="form-group">
-            <label for="week">week</label>
-            <input type="text" name="week" class="form-control" value="{{$lecture->week}}">
+            <label for="week">曜日</label>
+            <select name="week" class="form-control">
+                @foreach($week_days as $t )
+                    <option value={{$t}}>{{$t}}曜日</option>
+                @endforeach
+            </select>
         </div>
-        <!--/ week -->
 
-        <!-- timed -->
         <div class="form-group">
-            <label for="timed">timed</label>
-            <input type="text" name="timed" class="form-control" value="{{$lecture->timed}}"/>
+            <label for="timed">時限</label>
+            <select name="timed" class="form-control">
+                @for ($i = 1; $i < 6 ; $i++)
+                    <option value={{$i}} >{{$i}}時限目</option>
+                @endfor
+            </select>
         </div>
-        <!--/ timed -->
 
-
-
-        <!-- Saveボタン/Backボタン -->
         <div class="well well-sm">
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary">登録する</button>
             <a class="btn btn-link pull-right" href="{{ url('/') }}">
-                Back
+                戻る
             </a>
         </div>
-        <!--/ Saveボタン/Backボタン -->
 
-         <!-- id値を送信 -->
          <input type="hidden" name="id" value="{{$lecture->id}}">
-         <!--/ id値を送信 -->
-
-         <!-- CSRF -->
          @csrf
-         <!--/ CSRF -->
 
     </form>
     </div>

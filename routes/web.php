@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 Route::get('/', 'LecturesController@index');
 
 //詳細ページ
+Route::get('/lecturesshow/{shows}','LecturesController@show');
 Route::post('/lecturesshow/{shows}','LecturesController@show');
 
 //新規登録画面
@@ -28,6 +29,7 @@ Route::get('/lecturesnew', 'LecturesController@new');
 Route::post('/lectures','LecturesController@store');
 
 //更新画面
+Route::get('/lecturesedit/{lectures}','LecturesController@edit');
 Route::post('/lecturesedit/{lectures}','LecturesController@edit');
 
 //更新処理

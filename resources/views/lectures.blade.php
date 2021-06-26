@@ -1,175 +1,167 @@
-
-<!-- resources/views/books.blade.php -->
 @extends('layouts.app')
 @section('content')
 
-    <!-- Bootstrapの定形コード… -->
-    <div class="card-body">
-        <div class="card-title">
-            時間割確認表
+
+    <div class="contents">
+        <div class="card-body">
+            @include('common.errors')
+
+            @if ($errors->has('message'))
+                <div class="alert alert-danger">
+                    {{$errors->first('message')}}
+                </div>
+            @endif
+
+            <form action="{{ url('lectures') }}" method="POST" class="form-horizontal">
+                @csrf
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="title" class="col-sm-3 control-label">授業名</label>
+                        <input type="text" name="title" class="form-control"　value="{{ old('title') }}">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="teacher" class="col-sm-3 control-label">教授名</label>
+                        <input type="text" name="teacher" class="form-control" value="{{ old('teacher') }}">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="week" class="col-sm-3 control-label">曜日</label>
+                        <select name="week" class="form-control">
+                            @foreach($week_days as $t )
+                                <option value={{$t}}>{{$t}}曜日</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="timed" class="col-sm-3 control-label">時限目</label>
+                        <select name="timed" class="form-control">
+                            @for ($i = 1; $i < 6 ; $i++)
+                                <option value={{$i}} >{{$i}}時限目</option>
+                            @endfor
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="form-row">
+                    <div class="col-sm-offset-3 col-sm-6">
+                        <button type="submit" class="btn btn-primary">
+                            登録
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
 
-        <!-- バリデーションエラーの表示に使用-->
-        @include('common.errors')
-        <!-- バリデーションエラーの表示に使用-->
-
-        <!-- 本登録フォーム -->
-        <form action="{{ url('lectures') }}" method="POST" class="form-horizontal">
-            @csrf
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="title" class="col-sm-3 control-label">タイトル</label>
-                    <input type="text" name="title" class="form-control">
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label for="comment" class="col-sm-3 control-label">コメント</label>
-                    <input type="text" name="comment" class="form-control">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="week" class="col-sm-3 control-label">曜日</label>
-                    <select name="week" class="form-control">
-                        <option value="月">月曜日</option>
-                        <option value="火">火曜日</option>
-                        <option value="水">水曜日</option>
-                        <option value="木">木曜日</option>
-                        <option value="金">金曜日</option>
-                    </select>
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label for="timed" class="col-sm-3 control-label">時限目</label>
-                    <select name="timed" class="form-control">
-                        <option value=1 >1時限目</option>
-                        <option value=2 >2時限目</option>
-                        <option value=3 >3時限目</option>
-                        <option value=4 >4時限目</option>
-                        <option value=5 >5時限目</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- 本 登録ボタン -->
-            <div class="form-row">
-                <div class="col-sm-offset-3 col-sm-6">
-                    <button type="submit" class="btn btn-primary">
-                    Save
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <!-- Book: 既に登録されてる本のリスト -->
+        <div class="main-contents">
 
 
-    <!-- テーブル -->
-    <div class="center">
-        <table class="">
-            <thead>
-                <tr>
-                    <th class="entitle">時限</th>
-                    <th >月</th>
-
-                    <th>火</th>
-                    <th>水</th>
-                    <th>木</th>
-                    <th>金</th>
-                </tr>
-            </thead>
-
-
-
-
-
-            <tbody>
-                @for ($i = 1; $i < 6 ; $i++)
-                    <tr>
-                        <th class="entitle">{{ $i }}</th>
-                            @for ($j = 1; $j < 6 ; $j++)
-                                <?php $k = true; ?>
-                                @foreach ($lectures as $lecture)
-                                    @if ($lecture->table_place == $j * 10 + $i)
-                                        <td>
-                                            <p>{{$lecture->title}}</p>
-                                            <form action="{{ url('lecturesshow/'.$lecture->id) }}" method="POST">
-                                                @csrf
-                                                <button type="submit" class="btn btn-primary">
-                                                    まじ
-                                                </button>
-                                            </form>
-                                        </td>
-
-                                        <?php $k = false; ?>
-                                    @endif
-                                @endforeach
-                                @if ($k)
-                                    <td>無記入</td>
-                                @endif
-                            @endfor
-                    </tr>
-                @endfor
-            </tbody>
-        </table>
-    </div>
-
-
-
-
-
-        <!-- Book: 既に登録されてる本のリスト -->
-     <!-- 現在の本 -->
-
-     @if (count($lectures) > 0)
-        <div class="card-body">
-            <div class="card-body">
-                <table class="table table-striped task-table">
-                    <!-- テーブルヘッダ -->
+            <div class="left-container">
+                <table class="table">
                     <thead>
-                        <th>本一覧</th>
-                        <th>&nbsp;</th>
+                        <tr>
+                            <th class="space entitle lesson-number"></th>
+                            @foreach($week_days as $t )
+                                <th class="space entitle">{{$t}}</th>
+                            @endforeach
+
+                        </tr>
                     </thead>
-                    <!-- テーブル本体 -->
                     <tbody>
-                        @foreach ($lectures as $lecture)
+                        @for ($i = 1; $i < 6 ; $i++)
                             <tr>
-                                <!-- 本タイトル -->
-                                <td class="table-text">
-                                    <div>{{ $lecture->title }}</div>
-                                </td>
+                                <th class="space entitle lesson-number">{{ $i }}</th>
+                                    @for ($j = 1; $j < 6 ; $j++)
+                                        <?php $k = true; ?>
+                                        @foreach ($lectures as $lecture)
+                                            @if ($lecture->table_place == $j * 10 + $i)
+                                                <td class="space subtitle lecture">
+                                                    <form action="{{ url('lecturesshow/'.$lecture->id) }}" method="POST">
+                                                        @csrf
+                                                        <button type="submit" class="table-btn">
+                                                            {{$lecture->title}}
+                                                        </button>
+                                                    </form>
+                                                </td>
 
-                                <!-- 本: 更新ボタン -->
-                                <td>
-
-                                    <form action="{{ url('lecturesshow/'.$lecture->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="btn btn-primary">
-                                            更新
-                                        </button>
-                                    </form>
-                                </td>
-
-                                <!-- 本: 削除ボタン -->
-                                <td>
-                                    <form action="{{ url('lecture/'.$lecture->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button type="submit" class="btn btn-danger">
-                                            削除
-                                        </button>
-                                    </form>
-                                </td>
-
+                                                <?php $k = false; ?>
+                                            @endif
+                                        @endforeach
+                                        @if ($k)
+                                            <td class="space subtitle no-lecture">無記入</td>
+                                        @endif
+                                    @endfor
                             </tr>
-                        @endforeach
+                        @endfor
                     </tbody>
                 </table>
             </div>
+            @if ($show)
+                <div class="right-container">
+                    <div class="element">
+                        <p class="show-label">授業名</p>
+                        <h1 class="show-bigItem">{{$show->title}}</h1>
+                    </div>
+                    <div class="element">
+                        <p class="show-label">教授名</p>
+                        <p class="show-item">{{$show->teacher}}</p>
+                    </div>
+                    <div class="btn-space">
+                        <form class="show-form" action="{{ url('lecturesedit/'.$show->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-primary">
+                                更新
+                            </button>
+                        </form>
+
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">削除</button>
+                    </div>
+
+
+                </div>
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">投稿の削除</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">本当に削除してもよろしいですか？</div>
+                            <div class="modal-footer">
+                            <form action="{{ url('lecture/'.$show->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">
+                                        削除
+                                    </button>
+                                </form>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            @else
+                <div class="right-container">
+                    登録した授業をクリックすると詳細を表示することができます。
+                </div>
+
+            @endif
         </div>
-    @endif
+    </div>
+
+
+
 
 
 
 @endsection
+
+

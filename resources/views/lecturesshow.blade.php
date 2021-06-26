@@ -88,11 +88,10 @@
                                 @foreach ($lectures as $lecture)
                                     @if ($lecture->table_place == $j * 10 + $i)
                                         <td>
-                                            <p>{{$lecture->title}}</p>
                                             <form action="{{ url('lecturesshow/'.$lecture->id) }}" method="POST">
                                                 @csrf
                                                 <button type="submit" class="btn btn-primary">
-                                                    詳細
+                                                    {{$lecture->title}}
                                                 </button>
                                             </form>
                                         </td>
@@ -108,10 +107,12 @@
             </tbody>
         </table>
     </div>
-
+    @if ($show)
     <div>
         <p>{{$show->title}}</p>
+        <p>こんにちは</p>
     </div>
+    @endif
 
 
 
